@@ -1,0 +1,129 @@
+<div class="container">
+    <div class="row">
+      <div class="col-12">
+        <button
+          type="button"
+          class="btn btn-primary mb-3"
+          data-bs-toggle="modal"
+          data-bs-target="#exampleModal"
+          (click)="setModalType(null, 'add')"
+        >
+          Yeni imtahan əlavə et
+        </button>
+  
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+               <th scope="col">Dərsin kodu</th>
+                <th scope="col">Şagirdin kodu</th>
+                <th scope="col">Imtahan Vaxtı</th>
+                <th scope="col">Qiymət</th>
+                <th scope="col">Əməliyyatlar</th>
+              </tr>
+            </thead>
+            <tbody>
+              @if(!loading) { @if(list.length > 0) { @for (item of list; track
+              item; let i = $index) {
+              <tr>
+               
+                <td>{{ item.code }} </td>
+                <td>{{ item.studentCode }} </td>
+                <td>{{ item.examDate }} </td>
+                <td>{{ item.grade }}</td>
+                <td>
+                  <a
+                    href="javascript:void(0)"
+                    data-bs-toggle="modal"
+                    data-bs-target="#exampleModal"
+                    (click)="setModalType(item.id, 'modify')"
+                    >Düzəlt</a
+                  >
+                  |
+                  <a
+                    href="javascript:void(0)"
+                    data-bs-toggle="modal"
+                    data-bs-target="#exampleModal"
+                    (click)="setModalType(item.id, 'delete')"
+                    >Sistemdən sil</a
+                  >
+                </td>
+              </tr>
+              } } @else{
+              <tr>
+                <td colspan="5">Nəticə tapılmadı</td>
+              </tr>
+              } } @else {
+              <tr>
+                <td colspan="5">Lütfən gözləyin</td>
+              </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+  
+        <!-- Modal -->
+        <div
+          class="modal fade"
+          id="exampleModal"
+          tabindex="-1"
+          aria-labelledby="exampleModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">
+                  @if(modalType == 'add'){ Yeni dərs əlavə et } 
+                  @else if(modalType == 'delete') {
+                  Dərsi sil }
+                  @else if(modalType == 'modify') {
+                    Dərsi redaktə et }
+                </h1>
+                <button
+                  type="button"
+                  class="btn-close"
+                  id="exampleModalClose"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                  (click)="setModalType(null, '')"
+                ></button>
+              </div>
+              <div class="modal-body">
+                @if(modalType == 'add'){ 
+                  <form action="javascript:void(0)" autocomplete="off">
+                    <input type="text" name="code" class="form-control mb-3" placeholder="Dərsin kodu"  [(ngModel)]="code" >
+                    <input type="number" name="studentCode"  class="form-control mb-3" placeholder="Şagirdin kodu"  [(ngModel)]="studentCode" >
+                    <input type="datetime-local" name="examDate"  class="form-control mb-3"  placeholder="İmtahan tarixi" [(ngModel)]="examDate" >
+                    <input type="text" name="price"  class="form-control mb-3" placeholder="Qiyməti" [(ngModel)]="grade" >
+                  </form>
+                 } 
+                @else if(modalType == 'delete') {
+                Bu dərsi silmək istədiyinizdən əminsiniz ? }
+                @else if(modalType == 'modify') {
+                  <form action="javascript:void(0)" autocomplete="off">
+                    <input type="text" name="code" class="form-control mb-3" placeholder="Dərsin kodu"  [(ngModel)]="code" >
+                    <input type="number" name="studentCode"  class="form-control mb-3" placeholder="Şagirdin kodu"  [(ngModel)]="studentCode" >
+                    <input type="text" name="examDate"  class="form-control mb-3"  placeholder="İmtahan tarixi" [(ngModel)]="examDate" >
+                    <input type="text" name="price"  class="form-control mb-3" placeholder="Qiyməti"   [(ngModel)]="grade" >
+                  </form>
+                }
+              </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-bs-dismiss="modal"
+                  (click)="setModalType(null, '')"
+                >
+                  Bağla
+                </button>
+                <button type="button" class="btn btn-primary" (click)="modalAction()">Davam et</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
